@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Sasha — Happy Birthday</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,500;1,9..144,600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    :root {
+        /* twilight garden-party palette */
+        --sky-top:     #1c1240;
+        --sky-mid:     #6a3e93;
+        --sky-glow:    #e96a8f;
+        --sky-warm:    #ffcf86;
+        --paper:       #fdf6ea;
+        --paper-2:     #f6ead4;
+        --ink:         #3c2b4a;
+        --ink-soft:    #6a5677;
+        --gold:        #e0a441;
+        --berry:       #c94f6d;
+        --sage:        #86a17c;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    body {
+        font-family: 'Quicksand', sans-serif;
+        background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 45%, var(--sky-glow) 78%, var(--sky-warm) 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        position: relative;
+    }
+
+    /* ---------- ambient sky layer ---------- */
+    .sky {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .moon {
+        position: absolute;
+        top: 6%;
+        right: 10%;
+        width: 70px;
+        opacity: 0.9;
+        filter: drop-shadow(0 0 18px rgba(255, 224, 178, 0.55));
+    }
+
+    .star {
+        position: absolute;
+        border-radius: 50%;
+        background: #fff8e6;
+        animation: twinkle ease-in-out infinite;
+    }
+
+    @keyframes twinkle {
+        0%, 100% { opacity: 0.15; }
+        50% { opacity: 0.9; }
+    }
+
+    .firefly {
+        position: absolute;
+        border-radius: 50%;
+        background: var(--sky-warm);
+        box-shadow: 0 0 6px 2px rgba(255, 207, 134, 0.8);
+        animation: drift linear infinite, glow 3s ease-in-out infinite;
+    }
+
+    @keyframes drift {
+        0%   { transform: translate(0, 0); }
+        25%  { transform: translate(18px, -22px); }
+        50%  { transform: translate(-10px, -40px); }
+        75%  { transform: translate(-24px, -12px); }
+        100% { transform: translate(0, 0); }
+    }
+
+    @keyframes glow {
+        0%, 100% { opacity: 0.35; }
+        50% { opacity: 1; }
+    }
+
+    /* ---------- lantern garland ---------- */
+    .garland {
+        position: relative;
+        z-index: 2;
+        width: min(92vw, 520px);
+        margin-bottom: -8px;
+    }
+
+    .lantern-swing {
+        transform-origin: 50% 0%;
+        animation: sway 4.5s ease-in-out infinite;
+    }
+    .lantern-swing:nth-child(2) { animation-delay: -0.6s; }
+    .lantern-swing:nth-child(3) { animation-delay: -1.2s; }
+    .lantern-swing:nth-child(4) { animation-delay: -1.8s; }
+    .lantern-swing:nth-child(5) { animation-delay: -2.4s; }
+
+    @keyframes sway {
+        0%, 100% { transform: rotate(-3deg); }
+        50% { transform: rotate(3deg); }
+    }
+
+    .lantern-body { fill: var(--berry); }
+    .lantern-cap  { fill: var(--gold); }
+    .lantern-glow { fill: var(--sky-warm); opacity: 0.9; }
+
+    /* ---------- stage: envelope and card share one grid cell ---------- */
+    .stage {
+        position: relative;
+        z-index: 3;
+        display: grid;
+        place-items: center;
+        padding-top: 70px;
+    }
+
+    .stage > * {
+        grid-area: 1 / 1;
+    }
+
+    /* ---------- shared paper-stack look ---------- */
+    .paper-stack {
+        position: relative;
+        width: min(88vw, 460px);
+    }
+
+    .paper-stack::before,
+    .paper-stack::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: var(--paper-2);
+        border-radius: 16px 22px 18px 24px / 22px 16px 26px 18px;
+        z-index: -1;
+    }
+
+    .paper-stack::before { transform: rotate(-3.5deg); }
+    .paper-stack::after  { transform: rotate(2.5deg); background: #efe0c2; }
+
+    /* ---------- envelope (opening screen) ---------- */
+    #envelope {
+        text-align: center;
+        transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .envelope-face {
+        background: var(--paper);
+        border-radius: 16px 22px 18px 24px / 22px 16px 26px 18px;
+        padding: 46px 30px 40px;
+        box-shadow: 0 22px 45px rgba(20, 8, 40, 0.35);
+        border: 1px solid rgba(60, 43, 74, 0.08);
+    }
+
+    .envelope-label {
+        font-family: 'Fraunces', serif;
+        font-style: italic;
+        font-size: 1.3rem;
+        color: var(--ink-soft);
+        margin: 0 0 28px;
+    }
+
+    .seal {
+        width: 92px;
+        height: 92px;
+        margin: 0 auto 22px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 35% 30%, #e07c8f, var(--berry) 60%, #9c3654 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: none;
+        box-shadow: 0 8px 18px rgba(120, 30, 55, 0.45), inset 0 -6px 10px rgba(0,0,0,0.15), inset 0 4px 8px rgba(255,255,255,0.25);
+        transition: transform 0.25s ease;
+        font-family: 'Fraunces', serif;
+        font-style: italic;
+        font-size: 1rem;
+        color: #ffe9ec;
+        letter-spacing: 0.02em;
+    }
+
+    .seal:hover { transform: scale(1.06) rotate(-2deg); }
+    .seal:active { transform: scale(0.96); }
+
+    .envelope-hint {
+        margin: 0;
+        font-size: 0.85rem;
+        color: var(--ink-soft);
+    }
+
+    /* ---------- birthday card ---------- */
+    #birthdayCard {
+        text-align: center;
+        opacity: 0;
+        transform: scale(0.92);
+        pointer-events: none;
+        transition: opacity 0.7s ease 0.15s, transform 0.7s cubic-bezier(.2,.8,.3,1.2) 0.15s;
+    }
+
+    #birthdayCard.revealed {
+        opacity: 1;
+        transform: scale(1);
+        pointer-events: auto;
+    }
+
+    .card-face {
+        background: var(--paper);
+        border-radius: 16px 22px 18px 24px / 22px 16px 26px 18px;
+        padding: 42px 34px 30px;
+        box-shadow: 0 22px 45px rgba(20, 8, 40, 0.35);
+        border: 1px solid rgba(60, 43, 74, 0.08);
+    }
+
+    h1 {
+        font-family: 'Fraunces', serif;
+        font-style: italic;
+        font-weight: 600;
+        font-size: clamp(1.9rem, 5.5vw, 2.7rem);
+        color: var(--ink);
+        margin: 0 0 6px;
+    }
+
+    .subtext {
+        color: var(--ink-soft);
+        font-size: 1rem;
+        margin: 0 0 6px;
+        line-height: 1.5;
+    }
+
+    .instruction {
+        color: var(--ink-soft);
+        font-size: 0.85rem;
+        margin: 4px 0 10px;
+    }
+
+    /* ---------- cake illustration ---------- */
+    .cake-wrap {
+        width: 190px;
+        margin: 8px auto 4px;
+        cursor: pointer;
+    }
+
+    .flame { transform-origin: center bottom; transition: opacity 0.4s ease; }
+    .blown-out .flame { opacity: 0; }
+
+    .smoke {
+        opacity: 0;
+        transform-origin: center bottom;
+    }
+    .blown-out .smoke {
+        animation: smokeRise 1.6s ease-out forwards;
+    }
+
+    @keyframes smokeRise {
+        0%   { opacity: 0.5; transform: translateY(0) scale(0.6); }
+        100% { opacity: 0;   transform: translateY(-26px) scale(1.4); }
+    }
+
+    /* ---------- note tag ---------- */
+    .note-tag {
+        position: relative;
+        margin: 22px auto 0;
+        width: 88%;
+        background: var(--paper-2);
+        border-radius: 4px 14px 10px 4px / 10px 4px 14px 4px;
+        padding: 16px 18px;
+        transform: rotate(-1.6deg);
+        box-shadow: 0 8px 16px rgba(60, 43, 74, 0.15);
+        font-family: 'Fraunces', serif;
+        font-style: italic;
+        font-size: 0.98rem;
+        color: var(--ink);
+    }
+
+    .note-pin {
+        position: absolute;
+        top: -6px;
+        left: 20px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--gold);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    }
+
+    /* ---------- confetti petals ---------- */
+    .petal {
+        position: absolute;
+        z-index: 50;
+        pointer-events: none;
+    }
+
+    @media (max-width: 420px) {
+        .card-face { padding: 32px 22px 24px; }
+        .cake-wrap { width: 160px; }
+    }
+</style>
+</head>
+<body>
+
+<!-- Ambient twilight sky: moon, stars, fireflies -->
+<div class="sky" id="sky">
+    <svg class="moon" viewBox="0 0 100 100">
+        <path d="M62 8a42 42 0 1 0 30 74A50 50 0 0 1 62 8z" fill="#fff3d6"/>
+    </svg>
+</div>
+
+<div class="stage">
+
+    <!-- Lantern garland, always visible above whichever face is showing -->
+    <svg class="garland" viewBox="0 0 520 130" style="grid-area: unset; position: absolute; top: -70px; left: 50%; transform: translateX(-50%);">
+        <path d="M10,10 Q260,80 510,10" fill="none" stroke="#4a3a5c" stroke-width="2"/>
+        <g class="lantern-swing" style="transform-origin: 70px 26px;">
+            <ellipse class="lantern-glow" cx="70" cy="55" rx="26" ry="26" filter="blur(6px)"/>
+            <rect class="lantern-cap" x="62" y="26" width="16" height="6" rx="2"/>
+            <rect class="lantern-body" x="55" y="32" width="30" height="34" rx="10"/>
+        </g>
+        <g class="lantern-swing" style="transform-origin: 180px 46px;">
+            <ellipse class="lantern-glow" cx="180" cy="78" rx="22" ry="22" filter="blur(6px)"/>
+            <rect class="lantern-cap" x="173" y="46" width="14" height="5" rx="2"/>
+            <rect class="lantern-body" x="167" y="51" width="26" height="30" rx="9"/>
+        </g>
+        <g class="lantern-swing" style="transform-origin: 260px 55px;">
+            <ellipse class="lantern-glow" cx="260" cy="90" rx="24" ry="24" filter="blur(6px)"/>
+            <rect class="lantern-cap" x="252" y="55" width="16" height="6" rx="2"/>
+            <rect class="lantern-body" x="245" y="61" width="30" height="34" rx="10"/>
+        </g>
+        <g class="lantern-swing" style="transform-origin: 340px 46px;">
+            <ellipse class="lantern-glow" cx="340" cy="78" rx="22" ry="22" filter="blur(6px)"/>
+            <rect class="lantern-cap" x="333" y="46" width="14" height="5" rx="2"/>
+            <rect class="lantern-body" x="327" y="51" width="26" height="30" rx="9"/>
+        </g>
+        <g class="lantern-swing" style="transform-origin: 450px 26px;">
+            <ellipse class="lantern-glow" cx="450" cy="55" rx="26" ry="26" filter="blur(6px)"/>
+            <rect class="lantern-cap" x="442" y="26" width="16" height="6" rx="2"/>
+            <rect class="lantern-body" x="435" y="32" width="30" height="34" rx="10"/>
+        </g>
+    </svg>
+
+    <!-- Envelope: shown first -->
+    <div id="envelope" class="paper-stack">
+        <div class="envelope-face">
+            <p class="envelope-label">for Sasha</p>
+            <button class="seal" id="sealButton" onclick="startCelebration()">open</button>
+            <p class="envelope-hint">turn your sound on first</p>
+        </div>
+    </div>
+
+    <!-- Birthday card: revealed after the seal is opened -->
+    <div id="birthdayCard" class="paper-stack">
+        <div class="card-face">
+            <h1>Happy birthday, Sasha</h1>
+            <p class="subtext">A little glow, a little cake, and a wish just for you.</p>
+
+            <div class="cake-wrap" id="cake">
+                <svg viewBox="0 0 240 210" id="cakeSvg">
+                    <ellipse cx="120" cy="190" rx="86" ry="12" fill="#3c2b4a" opacity="0.12"/>
+
+                    <!-- bottom tier -->
+                    <rect x="45" y="120" width="150" height="60" rx="14" fill="#f6ead4"/>
+                    <path d="M45,132 Q60,120 75,132 T105,132 T135,132 T165,132 T195,132 L195,140 Q180,150 165,140 T135,140 T105,140 T75,140 T45,140 Z" fill="var(--berry)"/>
+
+                    <!-- top tier -->
+                    <rect x="72" y="70" width="96" height="55" rx="12" fill="#fdf6ea"/>
+                    <path d="M72,82 Q84,70 96,82 T120,82 T144,82 T168,82 L168,90 Q156,100 144,90 T120,90 T96,90 T72,90 Z" fill="var(--gold)" opacity="0.9"/>
+
+                    <!-- sprinkles -->
+                    <circle cx="90" cy="150" r="2.5" fill="var(--sage)"/>
+                    <circle cx="150" cy="155" r="2.5" fill="var(--gold)"/>
+                    <circle cx="120" cy="148" r="2.5" fill="var(--berry)"/>
+                    <circle cx="100" cy="105" r="2" fill="var(--berry)"/>
+                    <circle cx="140" cy="100" r="2" fill="var(--sage)"/>
+
+                    <!-- candles -->
+                    <g class="candle-group">
+                        <rect x="95" y="50" width="7" height="24" rx="2" fill="var(--gold)"/>
+                        <g class="smoke"><ellipse cx="98.5" cy="44" rx="4" ry="6" fill="#cfc4d6"/></g>
+                        <ellipse class="flame" cx="98.5" cy="42" rx="5" ry="8" fill="#ffb347" filter="blur(0.4px)"/>
+                    </g>
+                    <g class="candle-group">
+                        <rect x="116.5" y="44" width="7" height="30" rx="2" fill="var(--berry)"/>
+                        <g class="smoke"><ellipse cx="120" cy="38" rx="4" ry="6" fill="#cfc4d6"/></g>
+                        <ellipse class="flame" cx="120" cy="36" rx="5" ry="8" fill="#ffb347" filter="blur(0.4px)"/>
+                    </g>
+                    <g class="candle-group">
+                        <rect x="138" y="50" width="7" height="24" rx="2" fill="var(--sage)"/>
+                        <g class="smoke"><ellipse cx="141.5" cy="44" rx="4" ry="6" fill="#cfc4d6"/></g>
+                        <ellipse class="flame" cx="141.5" cy="42" rx="5" ry="8" fill="#ffb347" filter="blur(0.4px)"/>
+                    </g>
+                </svg>
+            </div>
+            <p class="instruction">Tap the cake to make a wish</p>
+
+            <div class="note-tag">
+                <div class="note-pin"></div>
+                "May your year ahead be as bright and beautiful as you are."
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Replace the URL inside src with your own direct MP3 music link -->
+<audio id="birthdaySong" preload="auto" loop>
+    <source src="https://files.catbox.moe/px9qxt.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        generateStars();
+        generateFireflies();
+        setupInteractiveCake();
+    });
+
+    function startCelebration() {
+        const envelope = document.getElementById('envelope');
+        const card = document.getElementById('birthdayCard');
+        const song = document.getElementById('birthdaySong');
+
+        envelope.style.opacity = '0';
+        envelope.style.transform = 'scale(0.9) rotate(-2deg)';
+        envelope.style.pointerEvents = 'none';
+
+        card.classList.add('revealed');
+        song.play().catch(() => {});
+    }
+
+    function generateStars() {
+        const sky = document.getElementById('sky');
+        for (let i = 0; i < 40; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 2 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 55 + '%';
+            star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            star.style.animationDelay = Math.random() * 4 + 's';
+            sky.appendChild(star);
+        }
+    }
+
+    function generateFireflies() {
+        const sky = document.getElementById('sky');
+        for (let i = 0; i < 10; i++) {
+            const fly = document.createElement('div');
+            fly.className = 'firefly';
+            const size = Math.random() * 3 + 2;
+            fly.style.width = size + 'px';
+            fly.style.height = size + 'px';
+            fly.style.left = Math.random() * 100 + '%';
+            fly.style.top = (35 + Math.random() * 55) + '%';
+            fly.style.animationDuration = (Math.random() * 6 + 6) + 's, ' + (Math.random() * 2 + 2) + 's';
+            fly.style.animationDelay = Math.random() * 4 + 's';
+            sky.appendChild(fly);
+        }
+    }
+
+    function setupInteractiveCake() {
+        const cake = document.getElementById('cake');
+        cake.addEventListener('click', () => {
+            if (!cake.classList.contains('blown-out')) {
+                cake.classList.add('blown-out');
+                createConfettiBurst(cake);
+            }
+        });
+    }
+
+    function createConfettiBurst(element) {
+        const colors = ['#c94f6d', '#e0a441', '#86a17c', '#f6ead4', '#e96a8f'];
+        const petalCount = 34;
+
+        for (let i = 0; i < petalCount; i++) {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            const w = Math.random() * 6 + 6;
+            const h = w * 1.6;
+            petal.style.width = w + 'px';
+            petal.style.height = h + 'px';
+            petal.style.background = colors[Math.floor(Math.random() * colors.length)];
+            petal.style.borderRadius = '0 100% 0 100%';
+
+            const rect = element.getBoundingClientRect();
+            let posX = rect.left + rect.width / 2;
+            let posY = rect.top + rect.height / 3;
+            petal.style.left = posX + 'px';
+            petal.style.top = posY + 'px';
+
+            document.body.appendChild(petal);
+
+            const angle = Math.random() * Math.PI * 2;
+            const velocity = Math.random() * 6 + 3;
+            const vx = Math.cos(angle) * velocity;
+            const vy = Math.sin(angle) * velocity - 4;
+            let rotation = Math.random() * 360;
+            const spin = (Math.random() - 0.5) * 12;
+
+            animatePetal(petal, posX, posY, vx, vy, rotation, spin);
+        }
+    }
+
+    function animatePetal(petal, posX, posY, vx, vy, rotation, spin) {
+        let opacity = 1;
+        const gravity = 0.18;
+
+        const loop = () => {
+            vy += gravity;
+            posX += vx;
+            posY += vy;
+            rotation += spin;
+            opacity -= 0.008;
+
+            petal.style.left = posX + 'px';
+            petal.style.top = posY + 'px';
+            petal.style.transform = 'rotate(' + rotation + 'deg)';
+            petal.style.opacity = opacity;
+
+            if (opacity > 0) {
+                requestAnimationFrame(loop);
+            } else {
+                petal.remove();
+            }
+        };
+        requestAnimationFrame(loop);
+    }
+</script>
+</body>
+</html>
